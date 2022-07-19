@@ -1,0 +1,9 @@
+C:\Projects\DotNet\HttpServer\HttpServer\obj\Debug\HttpServer.csproj.AssemblyReference.cache
+C:\Projects\DotNet\HttpServer\HttpServer\obj\Debug\HttpServer.csproj.CoreCompileInputs.cache
+C:\Projects\DotNet\HttpServer\HttpServer\bin\Debug\HttpServer.exe.config
+C:\Projects\DotNet\HttpServer\HttpServer\bin\Debug\HttpServer.exe
+C:\Projects\DotNet\HttpServer\HttpServer\bin\Debug\HttpServer.pdb
+C:\Projects\DotNet\HttpServer\HttpServer\obj\Debug\HttpServer.exe
+C:\Projects\DotNet\HttpServer\HttpServer\obj\Debug\HttpServer.pdb
+C:\Projects\DotNet\HttpServer\HttpServer\bin\Debug\webroot\about.html
+C:\Projects\DotNet\HttpServer\HttpServer\bin\Debug\webroot\index.html
