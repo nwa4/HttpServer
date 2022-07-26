@@ -6,15 +6,16 @@ namespace HttpServer.Core.Validations
 {
     public class HttpMethodRequestValidator : IRequestValidator
     {
-        private readonly HttpMethod[] _supportedMethods;
+        private readonly HttpMethod[] supportedMethods;
 
         public HttpMethodRequestValidator(HttpMethod[] supportedMethods)
         {
-            this._supportedMethods = supportedMethods;
+            this.supportedMethods = supportedMethods;
         }
+
         public WebResponse Validate(WebRequest request)
         {
-            if (!this._supportedMethods.Contains(request.Method))
+            if (!this.supportedMethods.Contains(request?.Method))
             {
                 return WebResponse.Create(HttpStatusCode.MethodNotAllowed);
             }

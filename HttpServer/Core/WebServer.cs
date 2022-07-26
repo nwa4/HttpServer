@@ -1,55 +1,53 @@
-﻿using HttpServer.Core.Logging;
-using HttpServer.Core.Routes;
-using HttpServer.Core.Validations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using HttpServer.Core.Logging;
+using HttpServer.Core.Routes;
+using HttpServer.Core.Validations;
 
 namespace HttpServer.Core
 {
     public class WebServer : IWebServer
     {
-        #region Fields
-        readonly Socket _socket;
-        IList<IRequestValidator> _requestValidators = new List<IRequestValidator>();
-        IList<IRequestRouteExecutor> _requestExecutors = new List<IRequestRouteExecutor>();
-        IList<ILogger> _loggers = new List<ILogger>();
-        #endregion
+        private readonly Socket socket;
+        private IList<IRequestValidator> requestValidators = new List<IRequestValidator>();
+        private IList<IRequestRouteExecutor> requestExecutors = new List<IRequestRouteExecutor>();
+        private IList<ILogger> loggers = new List<ILogger>();
 
-        #region Constructors
-        public WebServer() : this(IPAddress.Loopback.ToString(), 80) { }
+        public WebServer()
+            : this(IPAddress.Loopback.ToString(), 80)
+        {
+        }
 
         public WebServer(string ipAddress, int port)
         {
-            _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            _socket.Bind(new IPEndPoint(IPAddress.Parse(ipAddress), port));
+            this.socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            this.socket.Bind(new IPEndPoint(IPAddress.Parse(ipAddress), port));
         }
-        #endregion
 
-        #region Public Methods
         public async Task StartAsync()
         {
-            _socket.Listen(1);
+            this.socket.Listen(1);
             while (true)
             {
-                using (var client = await _socket.AcceptAsync())
+                using (var client = await this.socket.AcceptAsync())
                 {
                     ArraySegment<byte> data = new ArraySegment<byte>(new byte[client.ReceiveBufferSize]);
                     await client.ReceiveAsync(data, SocketFlags.None);
 
                     var request = WebRequest.Parse(Encoding.UTF8.GetString(data.Array));
 
-                    //Log Requests
-                    await logRequestAsync(request);
+                    // Log Requests
+                    await this.LogRequestAsync(request);
 
                     WebResponse response;
 
-                    //Validate Request
-                    response = validateRequest(request);
+                    // Validate Request
+                    response = this.ValidateRequest(request);
 
                     if (response != null)
                     {
@@ -57,61 +55,62 @@ namespace HttpServer.Core
                         break;
                     }
 
-                    //Match Request/Dispatch route
-                    response = await executeRequestAsync(request);
+                    // Match Request/Dispatch route
+                    response = await this.ExecuteRequestAsync(request);
 
-                    //Log response
-                    await logResponseAsync(response);
-                    
-                    //Send response
+                    // Log response
+                    await this.LogResponseAsync(response);
+
+                    // Send response
                     await client.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(response?.ToString())), SocketFlags.None);
-
                 }
-
             }
         }
 
         public WebServer AddRequestValidators(IRequestValidator validator)
         {
-            this._requestValidators.Add(validator);
+            this.requestValidators.Add(validator);
             return this;
         }
 
         public WebServer AddRequestExecutors(IRequestRouteExecutor executor)
         {
-            this._requestExecutors.Add(executor);
+            this.requestExecutors.Add(executor);
             return this;
         }
 
         public WebServer AddLoggers(ILogger logger)
         {
-            this._loggers.Add(logger);
+            this.loggers.Add(logger);
             return this;
+        }
+
+        public void Terminate()
+        {
+            this.socket.Disconnect(false);
+            this.socket.Close();
+            this.socket.Dispose();
         }
 
         public void Dispose()
         {
-            this.Stop();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public void Stop()
+        protected virtual void Dispose(bool disposing)
         {
-            _socket.Disconnect(false);
-            _socket.Close();
+            this.Terminate();
         }
 
-        #endregion
-
-        #region Private Methods
-
-        WebResponse validateRequest(WebRequest request)
+        private WebResponse ValidateRequest(WebRequest request)
         {
-            if (_requestValidators == null)
+            if (this.requestValidators == null)
             {
                 return null;
             }
 
-            foreach (var validator in _requestValidators)
+            foreach (var validator in this.requestValidators)
             {
                 var response = validator.Validate(request);
                 if (response != null)
@@ -123,19 +122,19 @@ namespace HttpServer.Core
             return null;
         }
 
-        async Task<WebResponse> executeRequestAsync(WebRequest request)
+        private async Task<WebResponse> ExecuteRequestAsync(WebRequest request)
         {
-            if (_requestExecutors == null)
+            if (this.requestExecutors == null)
             {
-                return WebResponse.Create(HttpStatusCode.NotFound, String.Empty, null);
+                return WebResponse.Create(HttpStatusCode.NotFound, string.Empty, null);
             }
 
             WebResponse response = null;
 
-            //Handle errors from request handlers
+            // Handle errors from request handlers
             try
             {
-                foreach (var executor in _requestExecutors)
+                foreach (var executor in this.requestExecutors)
                 {
                     response = await executor.ExecuteAsync(request);
                     if (response != null)
@@ -143,26 +142,25 @@ namespace HttpServer.Core
                         break;
                     }
                 }
-
             }
             catch (FileNotFoundException ex)
             {
-                await logRequestAsync(ex.Message);
+                await this.LogRequestAsync(ex.Message);
                 response = WebResponse.Create(HttpStatusCode.Forbidden);
             }
-            catch(IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException ex)
             {
-                await logRequestAsync(ex.Message);
+                await this.LogRequestAsync(ex.Message);
                 response = WebResponse.Create(HttpStatusCode.ExpectationFailed);
             }
             catch (AccessViolationException ex)
             {
-                await logRequestAsync(ex.Message);
+                await this.LogRequestAsync(ex.Message);
                 response = WebResponse.Create(HttpStatusCode.Unauthorized);
             }
             catch (Exception ex)
             {
-                await logRequestAsync(ex.Message);
+                await this.LogRequestAsync(ex.Message);
                 response = WebResponse.Create(HttpStatusCode.InternalServerError);
             }
 
@@ -170,42 +168,41 @@ namespace HttpServer.Core
             {
                 return response;
             }
-            
-            return WebResponse.Create(HttpStatusCode.NotFound); ;
+
+            return WebResponse.Create(HttpStatusCode.NotFound);
         }
 
-        async Task logRequestAsync(WebRequest request)
+        private async Task LogRequestAsync(WebRequest request)
         {
-            if (_loggers != null)
+            if (this.loggers != null)
             {
-                foreach (var logger in _loggers)
+                foreach (var logger in this.loggers)
                 {
                     await logger.LogAsync(request);
                 }
             }
         }
 
-        async Task logResponseAsync(WebResponse response)
+        private async Task LogResponseAsync(WebResponse response)
         {
-            if (_loggers != null)
+            if (this.loggers != null)
             {
-                foreach (var logger in _loggers)
+                foreach (var logger in this.loggers)
                 {
                     await logger.LogAsync(response);
                 }
             }
         }
 
-        async Task logRequestAsync(string message)
+        private async Task LogRequestAsync(string message)
         {
-            if (_loggers != null)
+            if (this.loggers != null)
             {
-                foreach (var logger in _loggers)
+                foreach (var logger in this.loggers)
                 {
                     await logger.LogAsync(message);
                 }
             }
         }
-        #endregion
     }
 }

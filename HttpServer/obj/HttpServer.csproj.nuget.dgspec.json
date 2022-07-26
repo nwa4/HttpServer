@@ -1,0 +1,79 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Projects\\DotNet\\HttpServer\\HttpServer\\HttpServer.csproj": {}
+  },
+  "projects": {
+    "C:\\Projects\\DotNet\\HttpServer\\HttpServer\\HttpServer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\DotNet\\HttpServer\\HttpServer\\HttpServer.csproj",
+        "projectName": "HttpServer",
+        "projectPath": "C:\\Projects\\DotNet\\HttpServer\\HttpServer\\HttpServer.csproj",
+        "packagesPath": "C:\\Users\\BC7108\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\DotNet\\HttpServer\\HttpServer\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\BC7108\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "\\\\danskenet.net\\Applications\\A3-RB\\Robotics\\Personal\\FNW\\Releases\\Nuget": {},
+          "\\\\danskenet.net\\Applications\\A3-RB\\Robotics\\Personal\\FNW\\Snippets": {},
+          "http://artifactory.danskenet.net/artifactory/api/nuget/db-nuget-a3rb-uipath-approvedlibraries": {},
+          "http://artifactory.danskenet.net/artifactory/api/nuget/db-nuget-a3rb-uipath-non-approvedlibraries": {},
+          "http://artifactory.danskenet.net/artifactory/api/nuget/joined-nuget-buildfeed": {},
+          "http://artifactory.danskenet.net/artifactory/api/nuget/joined-nuget-uipath": {},
+          "https://artifactory.danskenet.net/artifactory/api/nuget/remote-nuget-nuget.org": {},
+          "https://gallery.uipath.com/api/v2": {},
+          "https://www.myget.org/F/workflow/": {}
+        },
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "dependencies": {
+            "Microsoft.CodeAnalysis.FxCopAnalyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "StyleCop.Analyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.1.118, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

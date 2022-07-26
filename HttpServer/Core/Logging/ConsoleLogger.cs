@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HttpServer.Core.Logging
@@ -10,7 +7,7 @@ namespace HttpServer.Core.Logging
     {
         public async Task LogAsync(WebRequest request)
         {
-            await Console.Out.WriteLineAsync($"{DateTime.Now} {request.Method} {request.Route} {request.HttpVersion} recieved.");
+            await Console.Out.WriteLineAsync($"{DateTime.Now} {request?.Method} {request.Route} {request.HttpVersion} recieved.");
         }
 
         public async Task LogAsync(string message)
@@ -20,7 +17,7 @@ namespace HttpServer.Core.Logging
 
         public async Task LogAsync(WebResponse response)
         {
-            await Console.Out.WriteLineAsync($"{DateTime.Now} Response: {response.StatusCode}.");
+            await Console.Out.WriteLineAsync($"{DateTime.Now} Response: {response?.StatusCode}.");
         }
     }
 }

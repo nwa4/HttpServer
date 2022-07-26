@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "CS+LOCq5hX/qtGPgO29tVAqjDbmPTQG/GCcbJgkPv3zZQXG3t4NjHu7aI4s1/VQeVYta+a9N6CL6pp/7sE6h8Q==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\DotNet\\HttpServer\\HttpServer\\HttpServer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\BC7108\\.nuget\\packages\\microsoft.codeanalysis.fxcopanalyzers\\3.0.0\\microsoft.codeanalysis.fxcopanalyzers.3.0.0.nupkg.sha512",
+    "C:\\Users\\BC7108\\.nuget\\packages\\microsoft.codeanalysis.versioncheckanalyzer\\3.0.0\\microsoft.codeanalysis.versioncheckanalyzer.3.0.0.nupkg.sha512",
+    "C:\\Users\\BC7108\\.nuget\\packages\\microsoft.codequality.analyzers\\3.0.0\\microsoft.codequality.analyzers.3.0.0.nupkg.sha512",
+    "C:\\Users\\BC7108\\.nuget\\packages\\microsoft.netcore.analyzers\\3.0.0\\microsoft.netcore.analyzers.3.0.0.nupkg.sha512",
+    "C:\\Users\\BC7108\\.nuget\\packages\\microsoft.netframework.analyzers\\3.0.0\\microsoft.netframework.analyzers.3.0.0.nupkg.sha512",
+    "C:\\Users\\BC7108\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512"
+  ],
+  "logs": []
+}
